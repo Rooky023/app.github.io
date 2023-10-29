@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Schedule App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ccc; /* Grey background */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            border: 1px solid #ccc;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ccc;
+        }
+
+        .completed-checkbox {
+            width: 20px;
+        }
+
+        button {
+            background-color: #4CAF50; /* Green button color */
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        #schedule-completed-message {
+            color: green;
+            font-weight: bold;
+            text-align: center;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Schedule App</h1>
+    </header>
+    <div class="container">
+        <h2>Create Schedule</h2>
+        <div class="form-group">
+            <input type="text" id="subject" placeholder="Subject Name">
+        </div>
+        <div class="form-group">
+            <input type="number" id="minutes-required" placeholder="Minutes Required">
+        </div>
+        <button onclick="addScheduleEntry()">Add</button>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Subject</th>
+                    <th>Minutes Required</th>
+                    <th>Completed</th>
+                </tr>
+            </thead>
+            <tbody id="schedule-table">
+            </tbody>
+        </table>
+
+        <button onclick="resetSchedule()">Reset Schedule</button>
+        
+        <div id="schedule-completed-message">Schedule Completed</div>
+    </div>
+
+    <script>
+        function addScheduleEntry() {
+            const subject = document.getElementById('subject').value;
+            const minutesRequired = document.getElementById('minutes-required').value;
+
+            if (subject && minutesRequired) {
+                const table = document.getElementById('schedule-table');
+                const row = table.insertRow(-1);
+                const cell1 = row.insertCell(0);
+                const cell2 = row.insertCell(1);
+                const cell3 = row.insertCell(2);
+                cell1.innerHTML = subject;
+                cell2.innerHTML = minutesRequired;
+                cell3.innerHTML = '<input type="checkbox" class="completed-checkbox" onclick="checkScheduleCompletion()">';
+
+                document.getElementById('subject').value = '';
+                document.getElementById('minutes-required').value = '';
+            }
+        }
+
+        function resetSchedule() {
+            const table = document.getElementById('schedule-table');
+            table.innerHTML = '<thead><tr><th>Subject</th><th>Minutes Required</th><th>Completed</th></tr></thead>';
+            hideScheduleCompletedMessage();
+        }
+
+        function checkScheduleCompletion() {
+            const checkboxes = document.querySelectorAll('.completed-checkbox');
+            const allCompleted = Array.from(checkboxes).every(checkbox => checkbox.checked);
+            if (allCompleted) {
+                showScheduleCompletedMessage();
+            } else {
+                hideScheduleCompletedMessage();
+            }
+        }
+
+        function showScheduleCompletedMessage() {
+            document.getElementById('schedule-completed-message').style.display = 'block';
+        }
+
+        function hideScheduleCompletedMessage() {
+            document.getElementById('schedule-completed-message').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
